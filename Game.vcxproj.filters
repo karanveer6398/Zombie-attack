@@ -69,6 +69,12 @@
     <ClCompile Include="zombie2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="projectile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine.h">
@@ -126,6 +132,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="zombie2.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="projectile.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -150,6 +150,8 @@
     <ClCompile Include="asset.cpp" />
     <ClCompile Include="assets.cpp" />
     <ClCompile Include="circle_2D.cpp" />
+    <ClCompile Include="bullet.cpp" />
+    <ClCompile Include="projectile.cpp" />
     <ClCompile Include="zombie1.cpp" />
     <ClCompile Include="editor.cpp" />
     <ClCompile Include="engine.cpp" />
@@ -171,6 +173,8 @@
     <ClInclude Include="assets.h" />
     <ClInclude Include="circle_2D.h" />
     <ClInclude Include="configuration.h" />
+    <ClInclude Include="bullet.h" />
+    <ClInclude Include="projectile.h" />
     <ClInclude Include="zombie1.h" />
     <ClInclude Include="editor.h" />
     <ClInclude Include="engine.h" />

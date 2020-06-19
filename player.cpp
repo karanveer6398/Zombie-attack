@@ -2,9 +2,9 @@
 
 #include "player.h"
 #include "sound.h"
-
+#include "projectile.h"
 #include <iostream>
-
+#include <ctime>
 #include <SDL_mixer.h>
 
 Player::Player(std::string id)
@@ -13,6 +13,8 @@ Player::Player(std::string id)
 	_speed = 0.1f;
 
 	_translation = Vector_2D(0, 0);
+	_velocity = Vector_2D(0.02f, 0);
+	_time_until_spawn_projectile = 1200;
 
 	_collider.set_radius(_width / 5.0f);
 	_collider.set_translation(Vector_2D(_width / 2.0f, (float)_height));
@@ -31,8 +33,32 @@ void Player::render(Uint32 milliseconds_to_simulate, Assets* assets, SDL_Rendere
 	Game_Object::render(milliseconds_to_simulate, assets, renderer, config);
 }
 
-void Player::simulate_AI(Uint32, Assets* assets, Input* input, Scene*)
+void Player::simulate_AI(Uint32 milliseconds_to_simulate, Assets* assets, Input* input, Scene*scene)
 {
+
+	_time_until_spawn_projectile -= milliseconds_to_simulate;
+	bool should_spawn_a_projectile = _time_until_spawn_projectile <= 0;
+
+	if (should_spawn_a_projectile)
+	{
+	std:: string id = "Projectile.Time." + std::to_string(SDL_GetTicks());
+		Projectile* projectile = new Projectile(id);
+		scene->add_game_object(projectile);
+
+		projectile->set_translation(_translation);
+		
+		Game_Object* Zombie1 = scene->get_game_object("Zombie1");
+
+	    Vector_2D this_to_Zombie1 = Zombie1->translation() - _translation;
+		
+		this_to_Zombie1.normalize();
+		this_to_Zombie1.scale(0.3f);
+		projectile->set_velocity(this_to_Zombie1);
+		
+		_time_until_spawn_projectile = 2000;
+	}
+
+	
 	switch(_state.top())
 	{
 		case State::Idle:

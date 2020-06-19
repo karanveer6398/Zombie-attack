@@ -29,7 +29,7 @@ public:
 private:
 	void handle_enter_state(State state, Assets* assets);
 	void handle_exit_state(State state, Assets* assets);
-
+	 int _time_until_spawn_projectile;
 	float _speed;
 	std::stack<State> _state;
 };

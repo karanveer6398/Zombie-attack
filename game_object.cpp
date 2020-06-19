@@ -4,6 +4,7 @@
 #include "text.h"
 
 
+
 Game_Object::Game_Object(std::string id, std::string texture_id)
 	: _translation(0, 0), _velocity(0, 0), _collider(0.0f, Vector_2D(0.f, 0.f))
 {
@@ -13,7 +14,7 @@ Game_Object::Game_Object(std::string id, std::string texture_id)
 	_width  = 100;
 	_height = 100;
 
-	_flip = SDL_FLIP_NONE;
+	//_flip = SDL_FLIP_NONE;
 }
 Game_Object::~Game_Object()
 {
@@ -42,17 +43,44 @@ void Game_Object::simulate_physics(Uint32 milliseconds_to_simulate, Assets*, Sce
 		Circle_2D other_collider = Circle_2D(game_object->_collider.radius(), game_object->_collider.translation() + game_object->_translation);
 		float intersection_depth = collider.intersection_depth(other_collider);
 
-		if(intersection_depth > 0.0f)
+		if (intersection_depth > 0.0f)
 		{
-			Vector_2D other_collider_to_collider = collider.translation() - other_collider.translation();
-			other_collider_to_collider.normalize();
-			other_collider_to_collider.scale(intersection_depth);
-			_translation += other_collider_to_collider;
+			bool is_projectile_and_player = (id().find("Projectile") != -1 && game_object->id() == "Player") ||
+				(game_object->id().find("Projectile") != -1 && id() == "Player");
 
-			Vector_2D collider_to_other_collider = other_collider.translation() - collider.translation();
-			collider_to_other_collider.normalize();
-			collider_to_other_collider.scale(intersection_depth);
-			game_object->_translation += collider_to_other_collider;
+			bool is_projectile_and_zombie1 = (id().find("Projectile") != -1 && game_object->id() == "Zombie1") ||
+				(game_object->id().find("Projectile") != -1 && id() == "Zombie1");
+
+			bool is_projectile_and_zombie2 = (id().find("Projectile") != -1 && game_object->id() == "Zombie2") ||
+				(game_object->id().find("Projectile") != -1 && id() == "Zombie2");
+
+
+
+			if (is_projectile_and_player)
+			{
+				scene->remove_game_object("Player");
+			}
+			else if (is_projectile_and_zombie1)
+			{
+				scene->remove_game_object("Zombie1");
+			}
+			else if (is_projectile_and_zombie2)
+			{
+				scene->remove_game_object("Zombie2");
+			}
+
+			else
+			{
+				Vector_2D other_collider_to_collider = collider.translation() - other_collider.translation();
+				other_collider_to_collider.normalize();
+				other_collider_to_collider.scale(intersection_depth);
+				_translation += other_collider_to_collider;
+
+				Vector_2D collider_to_other_collider = other_collider.translation() - collider.translation();
+				collider_to_other_collider.normalize();
+				collider_to_other_collider.scale(intersection_depth);
+				game_object->_translation += collider_to_other_collider;
+			}
 		}
 	}
 }
@@ -132,3 +160,9 @@ void Game_Object::set_translation(Vector_2D translation)
 {
 	_translation = translation;
 }
+
+void Game_Object::set_velocity(Vector_2D velocity)
+{
+	_velocity = velocity;
+}
+
